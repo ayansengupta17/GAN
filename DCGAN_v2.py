@@ -15,7 +15,6 @@ batch_size=2
 annotation_dir = 'coco/test_annotations'
 
 
-#images=listdir('/home/SharedData3/yagnesh/c2i/train_images/')
 train_images= 'train_images/'
 encoded_vector_dir = 'captions_encoded/'
 
@@ -41,7 +40,7 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth=True
 config.allow_soft_placement=True
 sess=tf.Session(config=config)
-#sess=tf.Session()
+
 
 def Generator(batch_size,z_len,encoded_sentences_tensor,reuse_flag):
     with tf.variable_scope(tf.get_variable_scope(),reuse=reuse_flag):
@@ -180,8 +179,6 @@ d_vars = [var for var in tvars if 'd_' in var.name]
 g_vars = [var for var in tvars if 'g_' in var.name]
 
 d_trainer=tf.train.AdamOptimizer(0.5e-4,beta1=0.1).minimize(W_d,var_list=d_vars)
-#d_trainer=tf.train.AdamOptimizer(0.1e-2,beta1=0.1).minimize(W_d,var_list=d_vars)
-#d_trainer=tf.train.AdamOptimizer(0.1e-2,beta1=0.1).minimize(W_d,var_list=d_vars)
 g_trainer=tf.train.AdamOptimizer(0.1e-4,beta1=0.1).minimize(W_g, var_list=g_vars)
 
 sess.run(tf.global_variables_initializer())
@@ -191,58 +188,23 @@ saver=tf.train.Saver()
 saver.restore(sess,'./saved_models-soumya/c2i-43500')
 
 
-# In[3]:
-
-
-# In[ ]:
 
 while epoch<epochs:
     real_images,encoded_sentences=generate_coco_batch(batch_size)
     _,arbit_sentences=generate_coco_batch(batch_size)
-    
-
-    _,dLoss=sess.run([d_trainer,W_d],feed_dict={real_images_tensor:real_images, encoded_sentences_tensor:encoded_sentences,arbit_sentences_tensor:arbit_sentences})
-    
+    _,dLoss=sess.run([d_trainer,W_d],feed_dict={real_images_tensor:real_images, encoded_sentences_tensor:encoded_sentences,arbit_sentences_tensor:arbit_sentences})   
     real_images,encoded_sentences=generate_coco_batch(batch_size)
-
-
     _,gLoss=sess.run([g_trainer,W_g],feed_dict={real_images_tensor:real_images, encoded_sentences_tensor:encoded_sentences})
 
-#     print(epoch,gLoss,dLoss)
 
     if epoch%100==0:
         saver.save(sess,'./saved_models-soumya/c2i',global_step=epoch)
         gen_images=sess.run(generated_images_tensor,feed_dict={real_images_tensor:real_images, encoded_sentences_tensor:encoded_sentences})
         plt.imsave(arr=gen_images[0],fname='./outputs-soumya/'+str(epoch)+'_gen.png')
         plt.imsave(arr=real_images[0],fname='./outputs-soumya/'+str(epoch)+'_gt.png')
-        #plt.imshow(gen_images[0])
-        #plt.show()
-        #plt.imshow(real_images[0])
-        #plt.show()
+
     epoch=epoch+1
     print("epochs: "+ str(epoch)+" dloss: "+str(dLoss)+ "  gloss: "+str(gLoss))
 
-"""
-encoded_sentences=pickle.load(open('/home/SharedData3/yagnesh/c2i/test_encoded/captions_test.pkl','rb'))
 
-
-# In[5]:
-
-
-np.shape(encoded_sentences)
-
-
-# In[6]:
-
-
-gen=sess.run(generated_images_tensor,feed_dict={encoded_sentences_tensor:encoded_sentences})
-
-
-# In[7]:
-
-
-for i in range(10):
-    plt.imshow(gen[i])
-    plt.show()
-"""
 

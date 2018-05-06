@@ -15,7 +15,6 @@ batch_size=8
 annotation_dir = 'coco/test_annotations'
 
 
-#images=listdir('/home/SharedData3/yagnesh/c2i/train_images/')
 train_images= 'train_images/'
 encoded_vector_dir = 'captions_encoded/'
 
@@ -41,7 +40,7 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth=True
 config.allow_soft_placement=True
 sess=tf.Session(config=config)
-#sess=tf.Session()
+
 
 
 def Generator(batch_size,z_len,encoded_sentences_tensor,reuse_flag):
@@ -85,7 +84,6 @@ def Generator(batch_size,z_len,encoded_sentences_tensor,reuse_flag):
         g_w5=tf.get_variable('g_w5',shape=[5,5,64,128],initializer=tf.contrib.layers.xavier_initializer())
         g_b5=tf.get_variable('g_b5',shape=[64],initializer=tf.contrib.layers.xavier_initializer())
         g_a5=tf.nn.conv2d_transpose(g_a4,g_w5,output_shape=[batch_size,64,64,64],strides=[1,2,2,1],padding='SAME')+g_b5
-        #g_a5 = tf.layers.batch_normalization(g_a5, axis = -1, virtual_batch_size = 2,reuse=True,gamma_initializer=tf.ones_initializer(),scale=False,center=False)
         g_a5 = tf.layers.batch_normalization(g_a5,training=True)
         g_a5=tf.maximum(g_a5,beta*g_a5)
         
@@ -93,7 +91,6 @@ def Generator(batch_size,z_len,encoded_sentences_tensor,reuse_flag):
         g_w6=tf.get_variable('g_w6',shape=[5,5,3,64],initializer=tf.contrib.layers.xavier_initializer())
         g_b6=tf.get_variable('g_b6',shape=[3],initializer=tf.contrib.layers.xavier_initializer())
         g_a6=tf.nn.conv2d_transpose(g_a5,g_w6,output_shape=[batch_size,64,64,3],strides=[1,1,1,1],padding='SAME')+g_b6
-        #g_a6 = tf.layers.batch_normalization(g_a6, axis = -1, virtual_batch_size = 2,reuse=True,gamma_initializer=tf.ones_initializer(),scale=False,center=False)
         g_a6 = tf.layers.batch_normalization(g_a6,training=True)
 
         return tf.nn.sigmoid(g_a6)
@@ -110,29 +107,21 @@ def Discriminator(image_tensor,encoded_sentences_tensor,reuse_flag):
 
         d_w1=tf.get_variable('d_w1',shape=[5,5,4,64],initializer=tf.contrib.layers.xavier_initializer())
         d_b1=tf.get_variable('d_b1',shape=[64],initializer=tf.contrib.layers.xavier_initializer())
-        d_a1=tf.nn.conv2d(d_a0,d_w1,strides=[1,2,2,1],padding='SAME')+d_b1  
-        #d_a1 = tf.layers.batch_normalization(d_a1,training=True,reuse=False) 
-        #d_a1 = tf.layers.batch_normalization(d_a1, axis = -1, virtual_batch_size = 2,reuse=True,gamma_initializer=tf.ones_initializer(),scale=False,center=False)     
+        d_a1=tf.nn.conv2d(d_a0,d_w1,strides=[1,2,2,1],padding='SAME')+d_b1     
         d_a1=tf.maximum(d_a1,beta*d_a1)
         d_a1=tf.nn.dropout(d_a1,drop_rate)
-        #d_a1 = tf.layers.batch_normalization(d_a1, axis = -1, virtual_batch_size = 2)
-        #d_a1=tf.nn.relu(d_a1)
 
         d_w2=tf.get_variable('d_w2',shape=[5,5,64,128],initializer=tf.contrib.layers.xavier_initializer())
         d_b2=tf.get_variable('d_b2',shape=[128],initializer=tf.contrib.layers.xavier_initializer())
         d_a2=tf.nn.conv2d(d_a1,d_w2,strides=[1,2,2,1],padding='SAME')+d_b2
-        #d_a2 = tf.layers.batch_normalization(d_a2,training=True)
-        #d_a2 = tf.layers.batch_normalization(d_a2, axis = -1, virtual_batch_size = 2,reuse=True,gamma_initializer=tf.ones_initializer(),scale=False,center=False)
         d_a1=tf.maximum(d_a2,beta*d_a2)
         d_a2=tf.nn.dropout(d_a2,drop_rate)
         
-        #d_a2=tf.nn.relu(d_a2)
+
 
         d_w3=tf.get_variable('d_w3',shape=[5,5,128,256],initializer=tf.contrib.layers.xavier_initializer())
         d_b3=tf.get_variable('d_b3',shape=[256],initializer=tf.contrib.layers.xavier_initializer())
         d_a3=tf.nn.conv2d(d_a2,d_w3,strides=[1,2,2,1],padding='SAME')+d_b3
-        #d_a3 = tf.layers.batch_normalization(d_a3,training=True)
-        #d_a3 = tf.layers.batch_normalization(d_a3, axis = -1, virtual_batch_size = 2,reuse=True,gamma_initializer=tf.ones_initializer(),scale=False,center=False)
         d_a3=tf.maximum(d_a3,beta*d_a3)
         d_a3=tf.nn.dropout(d_a3,drop_rate)
         
@@ -141,8 +130,6 @@ def Discriminator(image_tensor,encoded_sentences_tensor,reuse_flag):
         d_w4=tf.get_variable('d_w4',shape=[5,5,256,512],initializer=tf.contrib.layers.xavier_initializer())
         d_b4=tf.get_variable('d_b4',shape=[512],initializer=tf.contrib.layers.xavier_initializer())
         d_a4=tf.nn.conv2d(d_a3,d_w4,strides=[1,2,2,1],padding='SAME')+d_b4
-        #d_a4 = tf.layers.batch_normalization(d_a4,training=True)
-        #d_a4 = tf.layers.batch_normalization(d_a4, axis = -1, virtual_batch_size = 2,reuse=True,gamma_initializer=tf.ones_initializer(),scale=False,center=False)
         d_a4=tf.maximum(d_a4,beta*d_a4)
         d_a4=tf.nn.dropout(d_a4,drop_rate)
         
@@ -151,8 +138,6 @@ def Discriminator(image_tensor,encoded_sentences_tensor,reuse_flag):
         d_w5=tf.get_variable('d_w5',shape=[5,5,512,1024],initializer=tf.contrib.layers.xavier_initializer())
         d_b5=tf.get_variable('d_b5',shape=[1024],initializer=tf.contrib.layers.xavier_initializer())
         d_a5=tf.nn.conv2d(d_a4,d_w5,strides=[1,2,2,1],padding='SAME')+d_b5
-        #d_a5 = tf.layers.batch_normalization(d_a5,training=True)
-        #d_a5 = tf.layers.batch_normalization(d_a5, axis = -1, virtual_batch_size = 2, scale=False,reuse=True,gamma_initializer=tf.ones_initializer(),center=False)
         d_a5=tf.maximum(d_a5,beta*d_a5)
         #d_a5=tf.sigmoid(d_a5)
         
@@ -207,8 +192,6 @@ d_vars = [var for var in tvars if 'd_' in var.name]
 g_vars = [var for var in tvars if 'g_' in var.name]
 
 d_trainer=tf.train.AdamOptimizer(0.5e-3,beta1=0.1).minimize(W_d,var_list=d_vars)
-#d_trainer=tf.train.AdamOptimizer(0.1e-2,beta1=0.1).minimize(W_d,var_list=d_vars)
-#d_trainer=tf.train.AdamOptimizer(0.1e-2,beta1=0.1).minimize(W_d,var_list=d_vars)
 g_trainer=tf.train.AdamOptimizer(0.5e-3,beta1=0.1).minimize(W_g, var_list=g_vars)
 
 sess.run(tf.global_variables_initializer())
@@ -219,17 +202,13 @@ gLoss, dLoss = 0.0, 0.0
 #saver.restore(sess,'./saved_models-soumya/c2i-43500')
 out =open('loss.csv','w')
 out.write('epoch, gloss, dloss\n')
-# In[3]:
-
-
-# In[ ]:
 
 while epoch<epochs:
     real_images,encoded_sentences=generate_coco_batch(batch_size)
     _,arbit_sentences=generate_coco_batch(batch_size)
     
     if count%4 != 0:
-        _,dLoss=sess.run([d_trainer,W_d],feed_dict={real_images_tensor:real_images,                 encoded_sentences_tensor:encoded_sentences,arbit_sentences_tensor:arbit_sentences})
+        _,dLoss=sess.run([d_trainer,W_d],feed_dict={real_images_tensor:real_images,encoded_sentences_tensor:encoded_sentences,arbit_sentences_tensor:arbit_sentences})
         count = count +1
     
     else:
@@ -237,7 +216,6 @@ while epoch<epochs:
 
         _,gLoss=sess.run([g_trainer,W_g],feed_dict={real_images_tensor:real_images, encoded_sentences_tensor:encoded_sentences})
         count = 1
-#     print(epoch,gLoss,dLoss)
 
     if epoch%100==0:
         saver.save(sess,'./saved_models-BN-test/c2i',global_step=epoch)
@@ -246,35 +224,9 @@ while epoch<epochs:
         plt.imsave(arr=real_images[0],fname='./outputs-BN-test/'+str(epoch)+'_gt.png')
         out.write(str(epoch)+ ','+ str(gLoss)+ ',' + str(dLoss)+'\n')
         
-        #plt.imshow(gen_images[0])
-        #plt.show()
-        #plt.imshow(real_images[0])
-        #plt.show()
+ 
     epoch=epoch+1
     print("epochs: "+ str(epoch)+" dloss: "+str(dLoss)+ "  gloss: "+str(gLoss))
 
 out.close()
-"""
-encoded_sentences=pickle.load(open('/home/SharedData3/yagnesh/c2i/test_encoded/captions_test.pkl','rb'))
-
-
-# In[5]:
-
-
-np.shape(encoded_sentences)
-
-
-# In[6]:
-
-
-gen=sess.run(generated_images_tensor,feed_dict={encoded_sentences_tensor:encoded_sentences})
-
-
-# In[7]:
-
-
-for i in range(10):
-    plt.imshow(gen[i])
-    plt.show()
-"""
 
