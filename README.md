@@ -382,26 +382,35 @@ a.  **DCGAN with Batch Normalization trained on MS-COCO**
 **References**
 
 1.  Kiros, Ryan, et al. "Skip-thought vectors." *Advances in neural information processing systems*. 2015
+    [Link](https://arxiv.org/abs/1506.06726)
 
 2.  Goodfellow, Ian, et al. "Generative adversarial nets." *Advances in neural information processing systems*. 2014.
-
-3.  Salimans, Tim, et al. "Improved techniques for training gans." *Advances in Neural Information Processing Systems*. 2016.
+    [Link](https://arxiv.org/abs/1406.2661)
+    
+3.  Salimans, Tim, et al. "Improved techniques for training gans." *Advances in Neural Information Processing Systems*.         2016. [Link](https://arxiv.org/abs/1606.03498)
 
 4.  Reed, Scott, et al. "Generative adversarial text to image synthesis." *arXiv preprint arXiv:1605.05396* (2016).
+    [Link](https://arxiv.org/abs/1605.05396)
 
 5.  Zhang, Han, et al. "Stackgan: Text to photo-realistic image synthesis with stacked generative adversarial networks."
     *IEEE Int. Conf. Comput. Vision (ICCV)*. 2017.
+    [Link](https://arxiv.org/abs/1612.03242)
 
 6.  Alec Radford, Luke Metz, and Soumith Chintala. “Unsupervised representation learning with deep convolutional generative
      adversarial networks.” *arXiv preprint arXiv:1511.06434*, 2015.
+     [Link](https://arxiv.org/abs/1511.06434)
 
 7.  Diederik P Kingma and Max Welling.” Auto-Encoding Variational Bayes.” *International Conference on Learning
      Representations (ICLR)*, 2014.
+     [Link](https://arxiv.org/abs/1312.6114)
 
-8.  Sergey Ioffe, Christian Szegedy, “Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift.” *arXiv preprint arXiv:1502.03167v3 (2015)*
+8.  Sergey Ioffe, Christian Szegedy, “Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate    Shift.” *arXiv preprint arXiv:1502.03167v3 (2015)*
+    [Link](https://arxiv.org/abs/1502.03167)
 
 **Other Important Resources**
 
 1.  [*Ian Goodfellow: Generative Adversarial Networks (NIPS 2016 tutorial)*](https://www.youtube.com/watch?v=HGYYEUSm-0Q)
 
 2.  [*NIPS 2016 Workshop on Adversarial Training - Ian Goodfellow - Introduction to GANs*](https://www.youtube.com/watch?v=RvgYvHyT15E)
+3. [DCGAN](https://github.com/carpedm20/DCGAN-tensorflow)
+4. [Skip-thought vectors](https://github.com/ryankiros/skip-thoughts)
