@@ -343,109 +343,65 @@ A.  **Experimental Platform**
 
 A.  **Experimental Results**
 
-    a.  **DCGAN with Batch Normalization and Conditional Augmentation on
-        > CUB**
+   a.  **DCGAN with Batch Normalization and Conditional Augmentation on CUB**
 
-  **Sentence**                                                                                     **Generated Image**                                                                  **Match from Dataset**
-  ------------------------------------------------------------------------------------------------ ------------------------------------------------------------------------------------ ------------------------------------------------------------------------------------
-  This little bird has a yellow green colored body, a small black tipped bill and a black crown.   ![](media/image49.png){width="1.359375546806649in" height="1.359375546806649in"}     ![](media/image36.png){width="1.3489588801399826in" height="1.3489588801399826in"}
-  This bird has a white and brown breast with a sharp pointed bill.                                ![](media/image41.png){width="1.3489588801399826in" height="1.3489588801399826in"}   ![](media/image46.png){width="1.3489588801399826in" height="1.3489588801399826in"}
-  This bird is bright red colored with black wings and a small beak.                               ![](media/image31.png){width="1.3697922134733158in" height="1.3697922134733158in"}   ![](media/image12.png){width="1.359375546806649in" height="1.359375546806649in"}
-  This bird has a blue crown, blue primaries, and blue secondaries.                                ![](media/image50.png){width="1.3697922134733158in" height="1.3697922134733158in"}   ![](media/image10.png){width="1.3489588801399826in" height="1.3489588801399826in"}
-  This is a small black and white bird with prominent crown feathers.                              ![](media/image30.png){width="1.3697922134733158in" height="1.3697922134733158in"}   ![](media/image38.png){width="1.3385422134733158in" height="1.3385422134733158in"}
+| Sentence        | Generated Image           | Match from Dataset  |
+| ------------- |:-------------:| -----:|
+|This little bird has a yellow green colored body, a small black tipped bill and a black crown.    | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen1.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt1.png) |
+|This bird has a white and brown breast with a sharp pointed bill.|![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen2.png) |![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt2.png) |
+|This bird is bright red colored with black wings and a small beak.    | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen3.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt3.png) |
+|This bird has a blue crown, blue primaries, and blue secondaries.    | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen4.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt4.png) |
+|This is a small black and white bird with prominent crown feathers.    | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen5.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt5.png) |
+
 
 > It can be seen from above pictures how the reparameterization trick
 > plays its role in generating images closer to the description
 > provided.
 
-a.  **DCGAN without Batch Normalization trained on MS-COCO**
+b.  **DCGAN without Batch Normalization trained on MS-COCO**
 
-  **Sentence**                                                             **Generated Image**                                                                  **Match from Dataset**
-  ------------------------------------------------------------------------ ------------------------------------------------------------------------------------ ------------------------------------------------------------------------------------
-  This person is surfing in the ocean during high tide in the afternoon.   ![](media/image40.png){width="1.2548326771653544in" height="1.0677088801399826in"}   ![](media/image29.png){width="1.1927088801399826in" height="1.0416666666666667in"}
-  A person in white uniform is swinging a baseball bat.                    ![](media/image35.png){width="1.2083333333333333in" height="1.2083333333333333in"}   ![](media/image27.png){width="1.25in" height="1.25in"}
+ 
+| Sentence        | Generated Image           | Match from Dataset  |
+| ------------- |:-------------:| -----:|
+|This person is surfing in the ocean during high tide in the afternoon.    | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen6.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt6.png) |
+|A person in white uniform is swinging a baseball bat.|![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen7.png) |![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt7.png) |
 
 a.  **DCGAN with Batch Normalization trained on MS-COCO**
 
-  **Sentence**                                                          **Generated Image**                                                                  **Match from Dataset**
-  --------------------------------------------------------------------- ------------------------------------------------------------------------------------ ------------------------------------------------------------------------------------
-  Two children with black jackets and white jeans are skating on ice.   ![](media/image37.png){width="1.2552088801399826in" height="1.2552088801399826in"}   ![](media/image19.png){width="1.2447922134733158in" height="1.2447922134733158in"}
-  A person is surfing in the ocean on a clear day.                      ![](media/image28.png){width="1.1458333333333333in" height="1.1458333333333333in"}   ![](media/image47.png){width="1.1458333333333333in" height="1.1458333333333333in"}
+  | Sentence        | Generated Image           | Match from Dataset  |
+| ------------- |:-------------:| -----:|
+|Two children with black jackets and white jeans are skating on ice.   | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen8.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt8.png) |
+|A person is surfing in the ocean on a clear day.|![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen9.png) |![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt9.png) |
+
 
 > We see that the results are much better for the CUBS dataset as
 > compared to the MS-COCO dataset. This might be because of the
 > variability in the MS-COCO dataset.
 
-**Effort**
-
-A.  **Fraction of time spent in different parts of the project**
-
-    a.  Literature survey: 5-7 days
-
-    b.  Data Preprocessing: \~2 days
-
-    c.  Implementation and training of DCGAN on MSCOCO: It took majority
-        > time (\~2-3 weeks) of our project. Each model, after any
-        > change was left to train for at least 24 hrs.
-
-    d.  Implementation and training DCGAN with Batch Normalization and
-        > Conditional Augmentation on CUB: (\~2 weeks) It was done at a
-        > later stage, when the results on the MSCOCO datasets were
-        > not satisfactory.
-
-B.  **Challenges**
-
-    a.  Frequent blowing up of losses and thus generating black images.
-
-    b.  Tensorflow model sizes were confined by the GPU memory. So we
-        > couldn’t train larger models, or with larger batch sizes.
-
-    c.  In some of our models training reaches saturation in very less
-        > number of epochs.
-
-C.  **Work Distribution**
-
-  Yagnesh Badiyani   Implemented the base code of conditional generative adversarial network and also the model with reparameterization trick.
-  ------------------ ---------------------------------------------------------------------------------------------------------------------------
-  Ayan Sengupta      Implementation and tweaking of DCGAN model and training it on the MSCOCO Dataset.
-  Soumya Dutta       Testing various DCGAN architectures and implementing Batch Normalization in the same
-  Akshay Khadse      Pre-processing: Skip-Thought vectors, Dataset downsizing and conditioning
 
 **References**
 
-1.  Kiros, Ryan, et al. "Skip-thought vectors." *Advances in neural
-    > information processing systems*. 2015
+1.  Kiros, Ryan, et al. "Skip-thought vectors." *Advances in neural information processing systems*. 2015
 
-2.  Goodfellow, Ian, et al. "Generative adversarial nets." *Advances in
-    > neural information processing systems*. 2014.
+2.  Goodfellow, Ian, et al. "Generative adversarial nets." *Advances in neural information processing systems*. 2014.
 
-3.  Salimans, Tim, et al. "Improved techniques for training gans."
-    > *Advances in Neural Information Processing Systems*. 2016.
+3.  Salimans, Tim, et al. "Improved techniques for training gans." *Advances in Neural Information Processing Systems*. 2016.
 
-4.  Reed, Scott, et al. "Generative adversarial text to image
-    > synthesis." *arXiv preprint arXiv:1605.05396* (2016).
+4.  Reed, Scott, et al. "Generative adversarial text to image synthesis." *arXiv preprint arXiv:1605.05396* (2016).
 
-5.  Zhang, Han, et al. "Stackgan: Text to photo-realistic image
-    > synthesis with stacked generative adversarial networks."
-    > *IEEE Int. Conf. Comput. Vision (ICCV)*. 2017.
+5.  Zhang, Han, et al. "Stackgan: Text to photo-realistic image synthesis with stacked generative adversarial networks."
+    *IEEE Int. Conf. Comput. Vision (ICCV)*. 2017.
 
-6.  Alec Radford, Luke Metz, and Soumith Chintala. “Unsupervised
-    > representation learning with deep convolutional generative
-    > adversarial networks.” *arXiv preprint arXiv:1511.06434*, 2015.
+6.  Alec Radford, Luke Metz, and Soumith Chintala. “Unsupervised representation learning with deep convolutional generative
+     adversarial networks.” *arXiv preprint arXiv:1511.06434*, 2015.
 
-7.  Diederik P Kingma and Max Welling.” Auto-Encoding Variational
-    > Bayes.” *International Conference on Learning
-    > Representations (ICLR)*, 2014.
+7.  Diederik P Kingma and Max Welling.” Auto-Encoding Variational Bayes.” *International Conference on Learning
+     Representations (ICLR)*, 2014.
 
-8.  Sergey Ioffe, Christian Szegedy, “Batch Normalization: Accelerating
-    > Deep Network Training by Reducing Internal Covariate Shift.”
-    > *arXiv preprint arXiv:1502.03167v3 (2015)*
+8.  Sergey Ioffe, Christian Szegedy, “Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift.” *arXiv preprint arXiv:1502.03167v3 (2015)*
 
 **Other Important Resources**
 
-1.  [*Ian Goodfellow: Generative Adversarial Networks (NIPS
-    > 2016 tutorial)*](https://www.youtube.com/watch?v=HGYYEUSm-0Q)
+1.  [*Ian Goodfellow: Generative Adversarial Networks (NIPS 2016 tutorial)*](https://www.youtube.com/watch?v=HGYYEUSm-0Q)
 
-2.  [*NIPS 2016 Workshop on Adversarial Training - Ian Goodfellow -
-    > Introduction to
-    > GANs*](https://www.youtube.com/watch?v=RvgYvHyT15E)
+2.  [*NIPS 2016 Workshop on Adversarial Training - Ian Goodfellow - Introduction to GANs*](https://www.youtube.com/watch?v=RvgYvHyT15E)
