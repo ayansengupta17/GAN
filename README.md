@@ -3,17 +3,22 @@
 
 
 **Objectives:**
+---------------
 
-1.  To generate realistic images from text descriptions.
+   1.  To generate realistic images from text descriptions.
 
-2.  To use the skip thought vector encoding for sentences.
+   2.  To use the skip thought vector encoding for sentences.
 
-3.  To construct Deep Convolutional GAN and train on MSCOCO and
+   3.  To construct Deep Convolutional GAN and train on MSCOCO and
     CUB datasets.
 
-**Related Theoritical concepts**
 
-A.  **Skip-Thought Vectors**
+
+**Related Theoritical concepts**
+--------------------------------
+
+**A**.  **Skip-Thought Vectors**
+--------------------------------
 
 Skip-thought model \[1\] is an unsupervised encoder-decoder model for
 encoding large chunks of text irrespective of the application domain.
@@ -34,7 +39,7 @@ in previous sentence
 function is sum of log probabilities of forward and backward sentences
 given the encoder representation
 
- ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/tex/10.gif)
+   ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/tex/10.gif)
 
 ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/skipthought.png)
 
@@ -51,7 +56,8 @@ given the encoder representation
  such that ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/tex/15.gif)
  by minimizing L2 loss to obtain W.
 
-A.  **Generative Adversarial Networks**
+**B**.  **Generative Adversarial Networks**
+-------------------------------------------
 
  ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gan.png)
 
@@ -70,7 +76,7 @@ A.  **Generative Adversarial Networks**
 
 2.  The generator G should maximise the probability that D incorrectly classifies the the generated examples.
 
- This is a minimax game between$G$ and $D$as:
+ This is a minimax game between G and D as:
 
  ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gan_equation.png)
 
@@ -82,7 +88,8 @@ A.  **Generative Adversarial Networks**
  which can deceive the discriminator. Hence, the training of
  discriminator and generator has to go hand in hand.
 
-A.  **Generative Adversarial Text to Image Synthesis**
+**C**.  **Generative Adversarial Text to Image Synthesis**
+-----------------------------------------------------------
 
 ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/model.png)
 
@@ -122,6 +129,7 @@ A.  **Generative Adversarial Text to Image Synthesis**
 3.  Realistic images with fake text
 
 **Implementation**
+-------------------
 
  We now mention the DCGAN architecture that we have used for our
  training. Further modifications that have been made are mentioned
@@ -138,11 +146,11 @@ A.  **Generative Adversarial Text to Image Synthesis**
 
 ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/implementation.png)
 
-A.  **Generator Architecture**
+**A**.  **Generator Architecture**
 
     1.  After noise is appended to the encoded sentence, we use a 
         deconvolutional neural network (referred to as convolutional nets
-        with fractional strides in \[6\]). We use 5 layers for 
+        with fractional strides in [6]). We use 5 layers for 
         the Generator network which are described as follows:
 
     2.  Generate 128 dimensional conditioning latent variable using 
@@ -161,7 +169,7 @@ A.  **Generator Architecture**
     6.  A deconvolutional layer with filter dimension 3x3. Stride length
          of 2 is used giving an output of 8x8x512. Leaky ReLU
          activation is used with the slope as 0.3 as suggested
-         in \[7\]. Padding used is ‘SAME’. The output is
+         in [7]. Padding used is ‘SAME’. The output is
          batch normalized.
 
     7.  A deconvolutional layer with filter dimension 3x3. Stride length
@@ -178,7 +186,7 @@ A.  **Generator Architecture**
          of 2 is used giving an output of 64x64x3. Sigmoid activation
          is used in this layer. Padding used is ‘SAME’.
 
-B.  **Discriminator Architecture**
+**B**.  **Discriminator Architecture**
 
     1.  Map the sentence vector into 4x4x128 tensor using a fully
          connected layer and reshape the same.
@@ -217,10 +225,10 @@ B.  **Discriminator Architecture**
 
     8.  Reshaped to a one dimensional vector and then converted to a
          single value using a fully connected layer. No activation used
-         in order to use **tf.sigmoid\_cross\_entropy\_with\_logits()**
+         in order to use **tf.sigmoid_cross_entropy_with_logits()**
          to generate a probability implicitly
 
-C.  **Loss Functions**
+**C**.  **Loss Functions**
 
  The cross-entropy loss function that we use for the discriminator
  network forces it to produce 1 when a correct image sentence pair is
@@ -242,7 +250,7 @@ C.  **Loss Functions**
  lagrange multiplier of 2.0 for the KL divergence loss follows from
  \[7\].
 
-A.  **Batch Normalization**
+**D**.  **Batch Normalization**
 
  As Xavier weight-initialization and ReLu activation functions helps
  counter the vanishing gradient problem, Batch Normalization is another
@@ -261,7 +269,7 @@ A.  **Batch Normalization**
  regularization effects decrease with larger batch size since the noise
  diminishes.
 
-A.  **Reparameterization Trick**.
+**E**.  **Reparameterization Trick**.
 
  The reparameterization trick is used to transform the encoded sentence
  vector to a conditional variable needed for the Generator. As we have
@@ -273,14 +281,15 @@ A.  **Reparameterization Trick**.
  simple space (normally distributed) to make the task of learning
  easier.
 
-A.  **Training Curves**
+**F**.  **Training Curves**
 
 ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/dloss.png)
 ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gloss.png)
 
 **Approaches:**
+---------------
 
-A.  **Without Batch Normalization**
+**A**.  **Without Batch Normalization**
 
  Depth of the Generative Network was varied (its depth was always <=
  depth of the Discriminator network). Since it is generally better if
@@ -291,7 +300,7 @@ A.  **Without Batch Normalization**
 
  The model sizes we made were restricted by the GPU’s we used.
 
-A.  **With Batch Normalization**
+**B**.  **With Batch Normalization**
 
  Once Batch Normalization was added, the training was much faster. We
  could train the model on the MS-COCO dataset for a batch size of upto
@@ -300,7 +309,7 @@ A.  **With Batch Normalization**
  sizes of greater than 8 was not feasible for the machine that we were
  using for this training.
 
-A.  **Batch Normalization and Conditional Augmentation**
+**A**.  **Batch Normalization and Conditional Augmentation**
 
  This approach proved to be the best in generating low resolution
  images. The idea was based on the Stage I implementation of StackGAN
@@ -316,8 +325,9 @@ to lack of resources and time we could not train the model.
  follow the description better.
 
 **Experiments**
+----------------
 
-A.  **Code Description**
+**A**.  **Code Description**
 
  This project was developed in Python 3.5 using **tensorflow-gpu
  v1.50**, **numpy**, and **pickle**. Total length of the codes are
@@ -332,7 +342,7 @@ A.  **Code Description**
 
  [***https://github.com/yagneshbadiyani/C2I***](https://github.com/yagneshbadiyani/C2I)
 
-A.  **Experimental Platform**
+**B**.  **Experimental Platform**
 
  The experiments were carried out on two Intel Xeon machines with GPUs.
  One of the machines had a Nvidia GeForce GTX 750 Ti and 8 GB RAM while
@@ -341,9 +351,9 @@ A.  **Experimental Platform**
  The runtime was observed to be approximately 24 hours for majority of
  the trials carried.
 
-A.  **Experimental Results**
+**C**.  **Experimental Results**
 
-   a.  **DCGAN with Batch Normalization and Conditional Augmentation on CUB**
+   **1**.  **DCGAN with Batch Normalization and Conditional Augmentation on CUB**
 
 | Sentence        | Generated Image           | Match from Dataset  |
 | ------------- |:-------------:| -----:|
@@ -358,7 +368,7 @@ A.  **Experimental Results**
 > plays its role in generating images closer to the description
 > provided.
 
-b.  **DCGAN without Batch Normalization trained on MS-COCO**
+**2**.  **DCGAN without Batch Normalization trained on MS-COCO**
 
  
 | Sentence        | Generated Image           | Match from Dataset  |
@@ -366,7 +376,7 @@ b.  **DCGAN without Batch Normalization trained on MS-COCO**
 |This person is surfing in the ocean during high tide in the afternoon.    | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen6.png) | ![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt6.png) |
 |A person in white uniform is swinging a baseball bat.|![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gen7.png) |![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gt7.png) |
 
-a.  **DCGAN with Batch Normalization trained on MS-COCO**
+**3**.  **DCGAN with Batch Normalization trained on MS-COCO**
 
   | Sentence        | Generated Image           | Match from Dataset  |
 | ------------- |:-------------:| -----:|
@@ -380,6 +390,7 @@ a.  **DCGAN with Batch Normalization trained on MS-COCO**
 
 
 **References**
+---------------
 
 1.  Kiros, Ryan, et al. "Skip-thought vectors." *Advances in neural information processing systems*. 2015
     [Link](https://arxiv.org/abs/1506.06726)
@@ -408,6 +419,7 @@ a.  **DCGAN with Batch Normalization trained on MS-COCO**
     [Link](https://arxiv.org/abs/1502.03167)
 
 **Other Important Resources**
+-----------------------------
 
 1.  [*Ian Goodfellow: Generative Adversarial Networks (NIPS 2016 tutorial)*](https://www.youtube.com/watch?v=HGYYEUSm-0Q)
 
