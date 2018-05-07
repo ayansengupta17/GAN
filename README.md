@@ -140,202 +140,206 @@ A.  **Generative Adversarial Text to Image Synthesis**
 
 A.  **Generator Architecture**
 
-    1.  After noise is appended to the encoded sentence, we use a deconvolutional neural network (referred to as convolutional nets with fractional strides in \[6\]). We use 5 layers for the Generator network which are described as follows:
+    1.  After noise is appended to the encoded sentence, we use a 
+        deconvolutional neural network (referred to as convolutional nets
+        with fractional strides in \[6\]). We use 5 layers for 
+        the Generator network which are described as follows:
 
-    2.  Generate 128 dimensional conditioning latent variable using twofully connected layers to map from 4800 dimensional sentence encoded vector to mean and sigma predictions.
+    2.  Generate 128 dimensional conditioning latent variable using 
+        twofully connected layers to map from 4800 dimensional sentence encoded
+        vector to mean and sigma predictions.
 
-    3.  Sample epsilon from normal distribution and generate the
-        > conditioning variable.
+    3.  Sample epsilon from normal distribution and generate the 
+        conditioning variable.
 
     4.  Append conditioning variable with noise latent variable which is
-        > 100 dimensional.
+         100 dimensional.
 
     5.  Map the appended vector into 4x4x1024 tensor using a fully
-        > connected layer and reshape the same.
+         connected layer and reshape the same.
 
     6.  A deconvolutional layer with filter dimension 3x3. Stride length
-        > of 2 is used giving an output of 8x8x512. Leaky ReLU
-        > activation is used with the slope as 0.3 as suggested
-        > in \[7\]. Padding used is ‘SAME’. The output is
-        > batch normalized.
+         of 2 is used giving an output of 8x8x512. Leaky ReLU
+         activation is used with the slope as 0.3 as suggested
+         in \[7\]. Padding used is ‘SAME’. The output is
+         batch normalized.
 
     7.  A deconvolutional layer with filter dimension 3x3. Stride length
-        > of 2 is used giving an output of 16x16x256. Leaky ReLU
-        > activation is used with the slope as 0.3. Padding used is
-        > ‘SAME’.The output is batch normalized.
+         of 2 is used giving an output of 16x16x256. Leaky ReLU
+         activation is used with the slope as 0.3. Padding used is
+         ‘SAME’.The output is batch normalized.
 
     8.  A deconvolutional layer with filter dimension 3x3. Stride length
-        > of 2 is used giving an output of 32x32x128. Leaky ReLU
-        > activation is used with the slope as 0.3. Padding used is
-        > ‘SAME’.The output is batch normalized.
+         of 2 is used giving an output of 32x32x128. Leaky ReLU
+         activation is used with the slope as 0.3. Padding used is
+         ‘SAME’.The output is batch normalized.
 
     9.  A deconvolutional layer with filter dimension 3x3. Stride length
-        > of 2 is used giving an output of 64x64x3. Sigmoid activation
-        > is used in this layer. Padding used is ‘SAME’.
+         of 2 is used giving an output of 64x64x3. Sigmoid activation
+         is used in this layer. Padding used is ‘SAME’.
 
 B.  **Discriminator Architecture**
 
     1.  Map the sentence vector into 4x4x128 tensor using a fully
-        > connected layer and reshape the same.
+         connected layer and reshape the same.
 
     2.  A convolutional layer with filter dimension 3x3 over the
-        > input image. Stride length of 2 is used giving an output
-        > of 32x32x64. Leaky ReLU activation is used with the slope
-        > as 0.3. Padding used is ‘SAME’. Dropout with keep probability
-        > 0.7 was used.
+         input image. Stride length of 2 is used giving an output
+         of 32x32x64. Leaky ReLU activation is used with the slope
+         as 0.3. Padding used is ‘SAME’. Dropout with keep probability
+         0.7 was used.
 
     3.  A convolutional layer with filter dimension 3x3 over the
-        > input image. Stride length of 2 is used giving an output
-        > of 16x16x128. Leaky ReLU activation is used with the slope
-        > as 0.3. Padding used is ‘SAME’. Dropout with keep probability
-        > 0.7 was used.
+         input image. Stride length of 2 is used giving an output
+         of 16x16x128. Leaky ReLU activation is used with the slope
+         as 0.3. Padding used is ‘SAME’. Dropout with keep probability
+         0.7 was used.
 
     4.  A convolutional layer with filter dimension 3x3 over the
-        > input image. Stride length of 2 is used giving an output
-        > of 8x8x256. Leaky ReLU activation is used with the slope
-        > as 0.3. Padding used is ‘SAME’. Dropout with keep probability
-        > 0.7 was used.
+         input image. Stride length of 2 is used giving an output
+         of 8x8x256. Leaky ReLU activation is used with the slope
+         as 0.3. Padding used is ‘SAME’. Dropout with keep probability
+         0.7 was used.
 
     5.  A convolutional layer with filter dimension 3x3 over the
-        > input image. Stride length of 2 is used giving an output
-        > of 4x4x512. Leaky ReLU activation is used with the slope
-        > as 0.3. Padding used is ‘SAME’. Dropout with keep probability
-        > 0.7 was used.
+         input image. Stride length of 2 is used giving an output
+         of 4x4x512. Leaky ReLU activation is used with the slope
+         as 0.3. Padding used is ‘SAME’. Dropout with keep probability
+         0.7 was used.
 
     6.  Outputs from 1 and 5 are augmented along channels.
 
     7.  A convolutional layer with filter dimension 3x3 over the
-        > input image. Stride length of 2 is used giving an output
-        > of 1x1x1024. Leaky ReLU activation is used with the slope
-        > as 0.3. Padding used is ‘SAME’. Dropout with keep probability
-        > 0.7 was used.
+         input image. Stride length of 2 is used giving an output
+         of 1x1x1024. Leaky ReLU activation is used with the slope
+         as 0.3. Padding used is ‘SAME’. Dropout with keep probability
+         0.7 was used.
 
     8.  Reshaped to a one dimensional vector and then converted to a
-        > single value using a fully connected layer. No activation used
-        > in order to use **tf.sigmoid\_cross\_entropy\_with\_logits()**
-        > to generate a probability implicitly
+         single value using a fully connected layer. No activation used
+         in order to use **tf.sigmoid\_cross\_entropy\_with\_logits()**
+         to generate a probability implicitly
 
 C.  **Loss Functions**
 
-> The cross-entropy loss function that we use for the discriminator
-> network forces it to produce 1 when a correct image sentence pair is
-> given to it and 0 otherwise. However such hard outputs is generally
-> not desirable for training the discriminator network. This is because
-> for a correct image-sentence pair the discriminator may try to push
-> its output to 1 even when it is actually giving 0.9 as output (say).
-> Therefore we modify the cross-entropy loss function slightly by
-> requiring it to give an output of 0.9 when sentence-image pair is
-> correct and 0.1 otherwise. This technique has been called
-> “Level-Smoothing”.
->
-> The losses used for the generator network include the obvious binary
-> cross entropy loss with level smoothened probabilities. In addition to
-> this loss, KL divergence between the conditioning latent variable
-> distributed over mean and variance predicted by initial layers of the
-> generator network and the zero mean unit variance normal distribution
-> is taken. This follows from the reparameterization trick. Also the
-> lagrange multiplier of 2.0 for the KL divergence loss follows from
-> \[7\].
+ The cross-entropy loss function that we use for the discriminator
+ network forces it to produce 1 when a correct image sentence pair is
+ given to it and 0 otherwise. However such hard outputs is generally
+ not desirable for training the discriminator network. This is because
+ for a correct image-sentence pair the discriminator may try to push
+ its output to 1 even when it is actually giving 0.9 as output (say).
+ Therefore we modify the cross-entropy loss function slightly by
+ requiring it to give an output of 0.9 when sentence-image pair is
+ correct and 0.1 otherwise. This technique has been called
+ “Level-Smoothing”.
+
+ The losses used for the generator network include the obvious binary
+ cross entropy loss with level smoothened probabilities. In addition to
+ this loss, KL divergence between the conditioning latent variable
+ distributed over mean and variance predicted by initial layers of the
+ generator network and the zero mean unit variance normal distribution
+ is taken. This follows from the reparameterization trick. Also the
+ lagrange multiplier of 2.0 for the KL divergence loss follows from
+ \[7\].
 
 A.  **Batch Normalization**
 
-> As Xavier weight-initialization and ReLu activation functions helps
-> counter the vanishing gradient problem, Batch Normalization is another
-> method for handling the problem of vanishing gradient as well as
-> exploding gradients. Batch Normalization is a method to reduce
-> internal covariate shift in deep neural networks, which leads to the
-> possible usage of higher learning rates \[8\]. After normalizing the
-> input in the neural network, we don’t have to worry that the scale of
-> input features might be vastly different. Thus, the gradient descent
-> can reduce the oscillations when approaching the minimum point and
-> converge faster. Again Batch Norm also reduces the impacts of earlier
-> layers on the later layers in deep neural network. Beside all the
-> positive effects, still a side-effect of Batch Normalization is
-> regularization. By using mini-batch size, a minor noise will be added
-> to each layer, which imposes the regularization effects. But the
-> regularization effects decrease with larger batch size since the noise
-> diminishes.
+ As Xavier weight-initialization and ReLu activation functions helps
+ counter the vanishing gradient problem, Batch Normalization is another
+ method for handling the problem of vanishing gradient as well as
+ exploding gradients. Batch Normalization is a method to reduce
+ internal covariate shift in deep neural networks, which leads to the
+ possible usage of higher learning rates \[8\]. After normalizing the
+ input in the neural network, we don’t have to worry that the scale of
+ input features might be vastly different. Thus, the gradient descent
+ can reduce the oscillations when approaching the minimum point and
+ converge faster. Again Batch Norm also reduces the impacts of earlier
+ layers on the later layers in deep neural network. Beside all the
+ positive effects, still a side-effect of Batch Normalization is
+ regularization. By using mini-batch size, a minor noise will be added
+ to each layer, which imposes the regularization effects. But the
+ regularization effects decrease with larger batch size since the noise
+ diminishes.
 
 A.  **Reparameterization Trick**.
 
-> The reparameterization trick is used to transform the encoded sentence
-> vector to a conditional variable needed for the Generator. As we have
-> seen in the Variational Autoencoder setup, the reparameterization
-> trick helps us in enabling the gradients flow through a stochastic
-> node. This also helps mitigate the learning problems from an encoder
-> output space which is ginormous and the vectors of concern might be in
-> sparse and discontinuous subspaces. Thus the space is converted to
-> simple space (normally distributed) to make the task of learning
-> easier.
+ The reparameterization trick is used to transform the encoded sentence
+ vector to a conditional variable needed for the Generator. As we have
+ seen in the Variational Autoencoder setup, the reparameterization
+ trick helps us in enabling the gradients flow through a stochastic
+ node. This also helps mitigate the learning problems from an encoder
+ output space which is ginormous and the vectors of concern might be in
+ sparse and discontinuous subspaces. Thus the space is converted to
+ simple space (normally distributed) to make the task of learning
+ easier.
 
 A.  **Training Curves**
 
-![](media/image44.png){width="4.901042213473316in"
-height="2.8275240594925632in"}![](media/image34.png){width="4.765625546806649in"
-height="2.7189140419947506in"}
+![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/dloss.png)
+![alt text](https://github.com/ayansengupta17/GAN/blob/master/common/images/gloss.png)
 
 **Approaches:**
 
 A.  **Without Batch Normalization**
 
-> Depth of the Generative Network was varied (its depth was always &lt;=
-> depth of the Discriminator network). Since it is generally better if
-> the Discriminator network is better trained than the Generator, we
-> changed the architecture keeping in mind that the final loss of the
-> discriminator should be less than that of the generator. This was
-> however very difficult to achieve while training with MS-COCO dataset.
->
-> The model sizes we made were restricted by the GPU’s we used.
+ Depth of the Generative Network was varied (its depth was always <=
+ depth of the Discriminator network). Since it is generally better if
+ the Discriminator network is better trained than the Generator, we
+ changed the architecture keeping in mind that the final loss of the
+ discriminator should be less than that of the generator. This was
+ however very difficult to achieve while training with MS-COCO dataset.
+
+ The model sizes we made were restricted by the GPU’s we used.
 
 A.  **With Batch Normalization**
 
-> Once Batch Normalization was added, the training was much faster. We
-> could train the model on the MS-COCO dataset for a batch size of upto
-> 8 on one of the machines. We noticed the introduction of noise as
-> batch normalization was done for smaller batch sizes. Having batch
-> sizes of greater than 8 was not feasible for the machine that we were
-> using for this training.
+ Once Batch Normalization was added, the training was much faster. We
+ could train the model on the MS-COCO dataset for a batch size of upto
+ 8 on one of the machines. We noticed the introduction of noise as
+ batch normalization was done for smaller batch sizes. Having batch
+ sizes of greater than 8 was not feasible for the machine that we were
+ using for this training.
 
 A.  **Batch Normalization and Conditional Augmentation**
 
-> This approach proved to be the best in generating low resolution
-> images. The idea was based on the Stage I implementation of StackGAN
-> and the model was created using the description in the same
-> implementation. Also, high resolution images could be generated by
-> using a SRGAN (Super Resolution GAN ) as Stage II of the same but due
-> to lack of resources and time we could not train the model.
->
-> The key aspect of this approach was to use reparameterization trick
-> and generate a continuous and more meaningful distribution out of the
-> encoded sentence vectors before augmenting it with noise to feed in
-> the generator’s decoder part. This has shown that the generated images
-> follow the description better.
+ This approach proved to be the best in generating low resolution
+ images. The idea was based on the Stage I implementation of StackGAN
+ and the model was created using the description in the same
+ implementation. Also, high resolution images could be generated by
+ using a SRGAN (Super Resolution GAN ) as Stage II of the same but due
+to lack of resources and time we could not train the model.
+
+ The key aspect of this approach was to use reparameterization trick
+ and generate a continuous and more meaningful distribution out of the
+ encoded sentence vectors before augmenting it with noise to feed in
+ the generator’s decoder part. This has shown that the generated images
+ follow the description better.
 
 **Experiments**
 
 A.  **Code Description**
 
-> This project was developed in Python 3.5 using **tensorflow-gpu
-> v1.50**, **numpy**, and **pickle**. Total length of the codes are
-> roughly 225 lines for each approach followed. This implementation
-> started off with a Conditional GAN made by one of the team members for
-> his graduate seminar.
->
-> The source for the implementations discussed in this report is
-> available at:
->
-> [***https://github.com/ayansengupta17/GAN***](https://github.com/ayansengupta17/GAN)
->
-> [***https://github.com/yagneshbadiyani/C2I***](https://github.com/yagneshbadiyani/C2I)
+ This project was developed in Python 3.5 using **tensorflow-gpu
+ v1.50**, **numpy**, and **pickle**. Total length of the codes are
+ roughly 225 lines for each approach followed. This implementation
+ started off with a Conditional GAN made by one of the team members for
+ his graduate seminar.
+
+ The source for the implementations discussed in this report is
+ available at:
+
+ [***https://github.com/ayansengupta17/GAN***](https://github.com/ayansengupta17/GAN)
+
+ [***https://github.com/yagneshbadiyani/C2I***](https://github.com/yagneshbadiyani/C2I)
 
 A.  **Experimental Platform**
 
-> The experiments were carried out on two Intel Xeon machines with GPUs.
-> One of the machines had a Nvidia GeForce GTX 750 Ti and 8 GB RAM while
-> the other had Nvidia GeForce GTX 1080 Ti (12GB)
->
-> The runtime was observed to be approximately 24 hours for majority of
-> the trials carried.
+ The experiments were carried out on two Intel Xeon machines with GPUs.
+ One of the machines had a Nvidia GeForce GTX 750 Ti and 8 GB RAM while
+ the other had Nvidia GeForce GTX 1080 Ti (12GB)
+
+ The runtime was observed to be approximately 24 hours for majority of
+ the trials carried.
 
 A.  **Experimental Results**
 
